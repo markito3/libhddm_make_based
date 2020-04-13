@@ -1,13 +1,13 @@
-MADE_CODE_BASENAMES = hddm_r hddm_s
-MADE_CPP = $(addsuffix .cpp, $(MADE_CODE_BASENAMES))
-MADE_HPP = $(addsuffix .hpp, $(MADE_CODE_BASENAMES))
-SOURCES = $(wildcard *.cc)
-BASENAMES = $(basename $(SOURCES))
+BASENAMES = hddm_r hddm_s
+MADE_CPP = $(addsuffix .cpp, $(BASENAMES))
+MADE_HPP = $(addsuffix .hpp, $(BASENAMES))
 OBJECTS1 = $(addsuffix .o, $(BASENAMES))
 OBJECTS =  $(addprefix .obj/, $(OBJECTS1))
-CPPFLAGS = -I../include -I/home/marki/cleave/particleType -I$(XSTREAM_HOME)/include -I$(JANA_HOME)/include -I$(ROOTSYS)/include
+#CPPFLAGS = -I../include -I$(XSTREAM_HOME)/include
+CPPFLAGS = -I$(XSTREAM_HOME)/include -I/home/marki/cleave/particleType
+CXXFLAGS = -fPIC
 
-all: $(MADE_CPP) $(MADE_HPP) .lib/libHDDM.a
+all: $(MADE_HPP) .lib/libhddm.a
 
 hddm_r.cpp hddm_r.hpp: rest.xml
 	hddm-cpp -o $(basename $@) rest.xml
@@ -15,14 +15,11 @@ hddm_r.cpp hddm_r.hpp: rest.xml
 hddm_s.cpp hddm_s.hpp: event.xml
 	hddm-cpp -o $(basename $@) event.xml
 
-install_includes:
-	test -d ../include/HDDM || mkdir -p ../include/HDDM
-	install $(wildcard *.h) ../include/HDDM
+.obj/%.o: %.cpp
+	test -d .obj || mkdir .obj
+	$(CXX) -c -o $@ $(CXXFLAGS) $(CPPFLAGS) $<
 
-.obj/%.o: %.cc
-	$(CXX) -o $@ $(CPPFLAGS) $<
-
-.lib/libHDDM.a: install_includes $(OBJECTS)
+.lib/libhddm.a: $(OBJECTS)
 	test -d .lib || mkdir .lib
 	ar rc $@ $(OBJECTS) $@
 
@@ -30,5 +27,5 @@ install: all
 	test -d ../include/HDDM || mkdir -p ../include/HDDM
 	install $(MADE_HPP) ../include/HDDM
 	test -d ../lib || mkdir -p ../lib
-	install .lib/libHDDM.a ../lib
+	install .lib/libhddm.a ../lib
 
