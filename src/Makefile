@@ -4,7 +4,7 @@ MADE_HPP = $(addsuffix .hpp, $(BASENAMES))
 OBJECTS1 = $(addsuffix .o, $(BASENAMES))
 OBJECTS =  $(addprefix .obj/, $(OBJECTS1))
 #CPPFLAGS = -I../include -I$(XSTREAM_HOME)/include
-CPPFLAGS = -I$(XSTREAM_HOME)/include -I/home/marki/cleave/particleType
+CPPFLAGS = -I$(XSTREAM_HOME)/include -I$(PARTICLETYPE_HOME)
 CXXFLAGS = -fPIC
 
 all: $(MADE_HPP) .lib/libhddm.a
