@@ -1,2 +1,4 @@
-*.cpp
-*.hpp
+.mkdirs_done
+.python
+.so
+.src
