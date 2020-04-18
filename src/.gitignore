@@ -1,4 +1,4 @@
-.mkdirs_done
-.python
 .so
 .src
+setup_*.py
+*.cpy
